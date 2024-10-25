@@ -1,3 +1,5 @@
+
+
 use std::io;
 
 /*среднее арифметическое*/
@@ -71,7 +73,7 @@ pub mod formuls {
             res[i] = res[k];
         }
         for i in (array.len() - k..array.len()) {
-            res[i] = res[array.len() - k-1];
+            res[i] = res[array.len() - k - 1];
         }
         mean_arithmetic(&res)
     }
@@ -80,7 +82,7 @@ pub mod formuls {
         if array.len() % 2 == 1 {
             array[array.len() / 2]
         } else {
-            (array[array.len() /2] + array[array.len() / 2-1])/ 2.0
+            (array[array.len() / 2] + array[array.len() / 2 - 1]) / 2.0
         }
     }
     /*мода*/
@@ -130,22 +132,21 @@ pub mod formuls {
         (sum / t).sqrt()
     }
     /*линейный коэффициент вариации*/
-    pub fn linear_variation_coefficient(array: &Vec<f64>) -> f64{
-        average_absolute_deviation(array)/mean_arithmetic(array)
+    pub fn linear_variation_coefficient(array: &Vec<f64>) -> f64 {
+        average_absolute_deviation(array) / mean_arithmetic(array)
     }
     /*квадратический коэффициент вариации*/
-    pub fn standard_variation_coefficient(array: &Vec<f64>) -> f64{
-        standard_deviation(array)/mean_arithmetic(array)
+    pub fn standard_variation_coefficient(array: &Vec<f64>) -> f64 {
+        standard_deviation(array) / mean_arithmetic(array)
     }
     /*дисперсия*/
-    pub fn variance (array: &Vec<f64>) -> f64 {
+    pub fn variance(array: &Vec<f64>) -> f64 {
         let average = mean_arithmetic(array);
-        let mut sum=0.0;
-        let t=array.len() as f64 - 1.0;
+        let mut sum = 0.0;
+        let t = array.len() as f64 - 1.0;
         for elements in array {
-            sum=sum+(average-elements)*(average-elements);
+            sum = sum + (average - elements) * (average - elements);
         }
-        (sum/t).sqrt()
+        (sum / t).sqrt()
     }
-
 }

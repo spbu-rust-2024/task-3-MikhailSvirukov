@@ -1,4 +1,4 @@
-pub const INPUT_OPTIONS: [&str; 23] = [
+pub const INPUT_OPTIONS: [&str; 24] = [
     "mean_arithmetic",
     "mean_generalized",
     "mean_geometric",
@@ -18,10 +18,11 @@ pub const INPUT_OPTIONS: [&str; 23] = [
     "exit",
 
     "add_numbers",
-    "explict_number_by_value",
-    "explict_number_by_index",
-    "explict_maxes",
-    "explict_mins",
+    "add_from_file",
+    "exclude_number_by_value",
+    "exclude_number_by_index",
+    "exclude_maxes",
+    "exclude_mins",
     "new_data",
     "print_data"
 
