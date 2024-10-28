@@ -1,3 +1,5 @@
+pub const OPTION_COUNT:usize = INPUT_OPTIONS.len();
+
 pub const INPUT_OPTIONS: [&str; 24] = [
     "mean_arithmetic",
     "mean_generalized",
@@ -17,7 +19,7 @@ pub const INPUT_OPTIONS: [&str; 24] = [
     "help",
     "exit",
 
-    "add_numbers",
+    "add",
     "add_from_file",
     "exclude_number_by_value",
     "exclude_number_by_index",
@@ -27,4 +29,6 @@ pub const INPUT_OPTIONS: [&str; 24] = [
     "print_data"
 
 ];
+
+
 

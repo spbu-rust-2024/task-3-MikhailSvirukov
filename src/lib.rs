@@ -1,7 +1,4 @@
 
-
-use std::io;
-
 /*среднее арифметическое*/
 pub mod formuls {
     pub fn mean_arithmetic(array: &Vec<f64>) -> f64 {
@@ -21,11 +18,11 @@ pub mod formuls {
     /*среднее геометрическое*/
     pub fn mean_geometric(array: &Vec<f64>) -> f64 {
         let r: f64 = array.len() as f64;
-        let mut sum: f64 = 0.0;
+        let mut sum: f64 = 1.0;
         for elements in array {
-            sum += elements.powf(1.0 / r);
+            sum *= elements;
         }
-        sum
+        sum.powf(1.0/r)
     }
     /*среднее арифметико-геометрическое*/
     pub fn mean_arithmetic_geometric(array: &Vec<f64>, e: usize) -> f64 {
@@ -69,10 +66,10 @@ pub mod formuls {
     /*винзоризованное среднее*/
     pub fn mean_winsorized(array: &Vec<f64>, k: usize) -> f64 {
         let mut res = array.clone();
-        for i in 0..(k) {
+        for i in 0..k {
             res[i] = res[k];
         }
-        for i in (array.len() - k..array.len()) {
+        for i in array.len() - k..array.len() {
             res[i] = res[array.len() - k - 1];
         }
         mean_arithmetic(&res)
@@ -86,9 +83,6 @@ pub mod formuls {
         }
     }
     /*мода*/
-
-
-    //добавить макрос
     pub fn mode(array: &Vec<f64>) -> f64 {
         let mut max = 1;
         let mut count = 1;
