@@ -46,7 +46,7 @@ fn main() {
             println!("{}{}", term_cursor::Up(1) , Red.bold().paint("exit"));
             break;
         }
-        else if status>exit!() && status<printdata!() {array=options::scen_new_array(status, &array);}
+        else if status>exit!() && status<printdata!() {options::scen_new_array(status, &mut array);}
         else {options::scen(status, &array);}
 
         while array.is_empty() {

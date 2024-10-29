@@ -21,9 +21,9 @@ macro_rules! help {() => {14}}
 macro_rules! exit {() => {15}}
 macro_rules! add {() => {16}}
 macro_rules! addfile {() => {17}}
-macro_rules! excludeindex {() => {18}}
+macro_rules! excludevalue {() => {18}}
 
-macro_rules! excludevalue {() => {19}}
+macro_rules! excludeindex{() => {19}}
 macro_rules! excludemax {() => {20}}
 macro_rules! excludemin {() => {21}}
 macro_rules! new {() => {22}}
@@ -132,80 +132,89 @@ pub fn scen(status: usize, array: &Vec<f64>) {
     }
 }
 
-pub fn scen_new_array(status: usize,array: &Vec<f64>)  -> Vec<f64>{
-    let mut array_to_realloc: Vec<f64>=vec![];
+pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
+
     match status {
         add!() => {
             println!("{}{}", term_cursor::Up(1) , Green.bold().paint("add"));
             let new_array = input_array();
-            for i in 0..array.len() {
-                array_to_realloc.push(array[i]);
-            }
             for i in 0..new_array.len() {
-                array_to_realloc.push(new_array[i]);
+                array.push(new_array[i]);
             }
-            sorting(&mut array_to_realloc);
+            sorting(array);
 
         }
 
         addfile!() => {
-            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("add_from_file"));
+            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("add from file"));
             let new_array = input_array_file();
-            for i in 0..array.len() {
-                array_to_realloc.push(array[i]);
-            }
             for i in 0..new_array.len() {
-                array_to_realloc.push(new_array[i]);
+                array.push(new_array[i]);
             }
-            sorting(&mut array_to_realloc);
+            sorting(array);
 
         }
 
         excludevalue!() => {
-            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("exclude_number_by_value"));
-            let numbers_exclude = input_array();
-            let mut check=0;
-            for i in 0..array.len() {
-                check=0;
+            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("exclude number by value"));
+            let mut numbers_exclude = input_array_usize();
+            sorting_usize(&mut numbers_exclude);
+            let mut i=0;
+            while i<array.len(){
+                let mut check=0;
                 for u in 0..numbers_exclude.len() {
-                    if numbers_exclude[u]==array[i] {check=1; break;}
+                    if numbers_exclude[u] as f64==array[i]  {array.remove(i);check=1;}
                 }
-                if check==0 {array_to_realloc.push(array[i]);}
+                if check==0 {i+=1;}
             }
         }
 
         excludeindex!() => {
-            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("exclude_number_by_index"));
-            let numbers_exclude = input_array();
+            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("exclude number by index"));
+            let mut numbers_exclude = input_array_usize();
+            sorting_usize(&mut numbers_exclude);
             let mut check=0;
-            for i in 0..array.len() {
-                check=0;
-                for u in 0..numbers_exclude.len() {
-                    if numbers_exclude[u]==i as f64 {check=1; break;}
-                }
-                if check==0 {array_to_realloc.push(array[i]);}
+            for u in 0..numbers_exclude.len() {
+                if numbers_exclude[u]>array.len() || numbers_exclude[u]<0 {check=1}
             }
-
+            if check==1 {println!("{}", Red.paint("Index out of range"))}
+            else {
+                for u in 0..numbers_exclude.len() {
+                    array.remove(numbers_exclude[u]);
+                }
+            }
         }
 
         excludemax!() => {
-            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("exclude_maxes"));
-            for i in 0..array.len() {
-                if array[i]!=array[array.len()-1] {array_to_realloc.push(array[i]);}
+            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("exclude maxes"));
+            let mut i=0;
+            let min=array[array.len()-1];
+            while i<array.len(){
+                if array[i]==min {array.remove(i);}
+                else {i+=1;}
             }
         }
 
         excludemin!() => {
-            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("exclude_mins"));
-            for i in 0..array.len() {
-                if array[i]!=array[0] {array_to_realloc.push(array[i]);}
+            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("exclude mins"));
+            let mut i=0;
+            let max=array[0];
+            while i<array.len(){
+                if array[i]==max {array.remove(i);}
+                else {i+=1;}
             }
         }
 
         new!() => {
-            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("new_data"));
-            array_to_realloc=input_array();
+            println!("{}{}", term_cursor::Up(1) , Green.bold().paint("new data"));
+            for i in 0..array.len() {
+                array.remove(0);
+            }
+            let array_to_realloc=input_array();
+            for i in 0..array_to_realloc.len() {array.push(array_to_realloc[i]);}
+            sorting(array);
         }
+
 
 
 
@@ -213,7 +222,6 @@ pub fn scen_new_array(status: usize,array: &Vec<f64>)  -> Vec<f64>{
 
 
     }
-    array_to_realloc
 }
 
 pub fn input_array() -> Vec<f64> {
@@ -223,6 +231,16 @@ pub fn input_array() -> Vec<f64> {
         .read_line( &mut line)
         .expect("Failed to read line");
     let array: Vec<f64>= line.trim().split(' ').map(|x| x.parse::<f64>().expect("not a number")).collect();
+    array
+}
+
+pub fn input_array_usize() -> Vec<usize> {
+    println!("{}", Style::new().bold().paint("Input numbers:"));
+    let mut line=String::new();
+    io::stdin()
+        .read_line( &mut line)
+        .expect("Failed to read line");
+    let array: Vec<usize>= line.trim().split(' ').map(|x| x.parse::<usize>().expect("not a number")).collect();
     array
 }
 pub fn input_array_file() -> Vec<f64> {
@@ -238,6 +256,22 @@ pub fn input_array_file() -> Vec<f64> {
 }
 
 pub fn sorting(array: &mut Vec<f64>) {
+    let mut counter =1;
+    while counter<array.len() {
+        let mut i = counter;
+        while i >0 {
+            if array[i] < array[i - 1] {
+                let t = array[i];
+                array[i] = array[i - 1];
+                array[i - 1] = t;
+            }
+            i -= 1;
+        }
+        counter+=1;
+    }
+}
+
+pub fn sorting_usize(array: &mut Vec<usize>) {
     let mut counter =1;
     while counter<array.len() {
         let mut i = counter;
