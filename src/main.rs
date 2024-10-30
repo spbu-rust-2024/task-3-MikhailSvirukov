@@ -1,5 +1,6 @@
 mod lib;
 mod options;
+mod side_funcs;
 mod variants;
 use crate::variants::var::INPUT_OPTIONS;
 use crate::variants::var::OPTION_COUNT;
@@ -31,12 +32,12 @@ fn main() {
     match input_option.as_str() {
         "print\n" => {
             println!("{}{}", term_cursor::Up(1), Green.bold().paint("print"));
-            array = options::input_array()
+            array = side_funcs::input_array()
         }
         "file\n" => {
             array = {
                 println!("{}{}", term_cursor::Up(1), Green.bold().paint("file"));
-                options::input_array_file()
+                side_funcs::input_array_file()
             }
         }
         _ => {
@@ -44,7 +45,7 @@ fn main() {
             return;
         }
     };
-    options::sorting(&mut array);
+    side_funcs::sorting(&mut array);
     let mut status = OPTION_COUNT;
 
     loop {
@@ -70,7 +71,7 @@ fn main() {
 
         while array.is_empty() {
             println!("{}", Red.underline().paint("Empty array, input new one:"));
-            array = options::input_array();
+            array = side_funcs::input_array();
         }
     }
 }

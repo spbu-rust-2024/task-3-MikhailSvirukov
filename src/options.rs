@@ -1,8 +1,8 @@
 use crate::lib::formuls;
-use crate::variants::var::{INPUT_OPTIONS, OPTION_COUNT};
+use crate::side_funcs::{input_array, input_array_file, input_array_usize, print_man, sorting};
 use ansi_term::Color::{Green, Red};
 use ansi_term::Style;
-use std::{fs, io};
+use std::io;
 
 macro_rules! arithmetic {
     () => {
@@ -168,6 +168,10 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             );
         }
         arithmeticgeometric!() => {
+            println!(
+                "{}{}",term_cursor::Up(1),
+                Green.bold().paint("mean arithmetic geometric"),
+            );
             if array.len() != 2 {
                 println!("{}", Red.paint("Expect two values"))
             } else {
@@ -181,40 +185,40 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                     .expect("Failed to read line");
                 let numb = line.trim().parse::<usize>().expect("no digit");
                 println!(
-                    "{} {}",
-                    formuls::mean_arithmetic_geometric(array, numb),
-                    term_cursor::Up(2)
+                    "{}",
+                    formuls::mean_arithmetic_geometric(array, numb)
                 );
-                println!(
-                    "{} {}",
-                    Green.bold().paint("mean arithmetic geometric"),
-                    term_cursor::Down(2)
-                );
+
             }
         }
         arithmeticgeometricmodified!() => {
+            println!(
+                "{}{}",term_cursor::Up(1),
+                Green.bold().paint("mean arithmetic geometric modified"),
+            );
             if array.len() != 2 {
                 println!("{}", Red.paint("Expect two values"))
             } else {
                 println!(
-                    "{} {}",
+                    "{}",
                     formuls::mean_arithmetic_geometric_modified(array),
-                    term_cursor::Up(2)
                 );
-                println!(
-                    "{} {}",
-                    Green.bold().paint("mean arithmetic geometric modified"),
-                    term_cursor::Down(2)
-                );
+
             }
         }
 
         trancated!() => {
             println!(
-                "{}",
+                "{} {}",
                 Style::new()
                     .bold()
-                    .paint("Input number of mins/maxes to exclude:")
+                    .paint("Input number of mins/maxes to exclude:"),
+                term_cursor::Up(2)
+            );
+            println!(
+                "{} {}",
+                Green.bold().paint("mean truncated"),
+                term_cursor::Down(2)
             );
             let mut line = String::new();
             io::stdin()
@@ -225,23 +229,23 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 println!("{}", Red.paint("Can not extract so many numbers"));
             } else {
                 println!(
-                    "{} {}",
+                    "{}",
                     formuls::mean_truncated(array, numb),
-                    term_cursor::Up(2)
-                );
-                println!(
-                    "{} {}",
-                    Green.bold().paint("mean truncated"),
-                    term_cursor::Down(2)
                 );
             }
         }
         winsorized!() => {
             println!(
-                "{}",
+                "{} {}",
                 Style::new()
                     .bold()
-                    .paint("Input number of mins/maxes to replace:")
+                    .paint("Input number of mins/maxes to replace:"),
+                term_cursor::Up(2)
+            );
+            println!(
+                "{} {}",
+                Green.bold().paint("mean winsorized"),
+                term_cursor::Down(2)
             );
             let mut line = String::new();
             io::stdin()
@@ -252,14 +256,8 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 println!("{}", Red.paint("Can not extract so many numbers"));
             } else {
                 println!(
-                    "{} {}",
-                    formuls::mean_winsorized(array, numb),
-                    term_cursor::Up(2)
-                );
-                println!(
-                    "{} {}",
-                    Green.bold().paint("mean winsorized"),
-                    term_cursor::Down(2)
+                    "{}",
+                    formuls::mean_winsorized(array, numb)
                 );
             }
         }
@@ -465,74 +463,12 @@ pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
                 array.pop();
             }
             let array_to_realloc = input_array();
-            for item in array_to_realloc{
+            for item in array_to_realloc {
                 array.push(item);
             }
             sorting(array);
         }
 
         _ => println!("{}", Red.paint("No valid argument")),
-    }
-}
-pub fn input_array() -> Vec<f64> {
-    println!("{}", Style::new().bold().paint("Input numbers:"));
-    let mut line = String::new();
-    io::stdin()
-        .read_line(&mut line)
-        .expect("Failed to read line");
-    let array: Vec<f64> = line
-        .trim()
-        .split(' ')
-        .map(|x| x.parse::<f64>().expect("not a number"))
-        .collect();
-    array
-}
-
-pub fn input_array_usize() -> Vec<usize> {
-    println!("{}", Style::new().bold().paint("Input numbers:"));
-    let mut line = String::new();
-    io::stdin()
-        .read_line(&mut line)
-        .expect("Failed to read line");
-    let array: Vec<usize> = line
-        .trim()
-        .split(' ')
-        .map(|x| x.parse::<usize>().expect("not a number"))
-        .collect();
-    array
-}
-pub fn input_array_file() -> Vec<f64> {
-    println!("{}", Style::new().bold().paint("Input path to file:"));
-    let mut line = String::new();
-    io::stdin()
-        .read_line(&mut line)
-        .expect("Failed to read line");
-    let line = fs::read_to_string(line.trim()).expect("Should have been able to read the file");
-    let array: Vec<f64> = line
-        .trim()
-        .split(' ')
-        .map(|x| x.parse::<f64>().expect("not a number"))
-        .collect();
-    array
-}
-
-pub fn sorting(array: &mut [f64]) {
-    let mut counter = 1;
-    while counter < array.len() {
-        let mut i = counter;
-        while i > 0 {
-            if array[i] < array[i - 1] {
-                array.swap(i, i-1);
-            }
-            i -= 1;
-        }
-        counter += 1;
-    }
-}
-
-pub fn print_man() {
-    println!("{}", Style::new().bold().paint("This is a basic statistics application for calculation of some functions.\nThis is the list of options available:"));
-    for item in INPUT_OPTIONS {
-        println!("--{}", Style::new().italic().paint(item));
     }
 }

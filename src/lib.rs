@@ -1,7 +1,6 @@
-/*среднее арифметическое*/
-
 pub mod formuls {
 
+    /*среднее арифметическое*/
     pub fn mean_arithmetic(array: &[f64]) -> f64 {
         let r: f64 = array.len() as f64;
         let sum: f64 = array.iter().sum::<f64>();
@@ -35,7 +34,7 @@ pub mod formuls {
         while i < e {
             a_array.push((a_array[i - 1] + b_array[i - 1]) / 2.0);
             b_array.push((a_array[i - 1] * b_array[i - 1]).sqrt());
-            i +=1;
+            i += 1;
         }
         a_array[e - 1]
     }
@@ -93,25 +92,19 @@ pub mod formuls {
     }
     /*мода*/
     pub fn mode(array: &[f64]) -> f64 {
-        let mut max = 1;
+        let mut max = 0;
         let mut count = 1;
-        let mut numb = array[0];
+        let mut numb = 0.0;
         let mut dev = 1.0;
         for i in 1..array.len() {
             if array[i] != array[i - 1] {
-                if max == count {
-                    numb += array[i];
-                    dev += 1.0
-                } else if max < count {
-                    numb = array[i - 1];
-                    dev = 1.0;
-                    max = count
-                }
-                count = 1;
-            } else {
-                count += 1;
-            }
+                if max==count {numb+=array[i-1]; dev+=1.0; }
+                else if max<count {numb=array[i-1]; dev=1.0;max=count;}
+                count=1;
+            } else { count+=1;}
         }
+        if max==count {numb+=array[array.len()-1]; dev+=1.0; }
+        else if max<count {numb=array[array.len()-1]; dev=1.0;max=count;}
         numb / dev
     }
     /*среднее линейное отклонение*/
@@ -148,7 +141,7 @@ pub mod formuls {
         let mut sum = 0.0;
         let t = array.len() as f64 - 1.0;
         for elements in array {
-            sum +=(average - elements) * (average - elements);
+            sum += (average - elements) * (average - elements);
         }
         (sum / t).sqrt()
     }
