@@ -1,7 +1,7 @@
 pub mod var {
     pub const OPTION_COUNT: usize = INPUT_OPTIONS.len();
 
-    pub const INPUT_OPTIONS: [&str; 25] = [
+    pub const INPUT_OPTIONS: [&str; 26] = [
         "mean_arithmetic",
         "mean_generalized",
         "mean_geometric",
@@ -27,5 +27,6 @@ pub mod var {
         "exclude_mins",
         "new_data",
         "print_data",
+        "invalid"
     ];
 }

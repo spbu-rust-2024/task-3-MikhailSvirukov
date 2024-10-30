@@ -9,14 +9,9 @@ use ansi_term::Color::{Green, Red};
 use ansi_term::Style;
 use std::io;
 
-macro_rules! printdata {
-    () => {
-        24
-    };
-}
 macro_rules! exit {
     () => {
-        16
+        INPUT_OPTIONS[16];
     };
 }
 fn main() {
@@ -47,27 +42,25 @@ fn main() {
         }
     };
     side_funcs::sorting(&mut array);
-    let mut status = OPTION_COUNT;
+    let mut status = INPUT_OPTIONS[OPTION_COUNT-1];
 
     loop {
-        status = OPTION_COUNT;
+        status = INPUT_OPTIONS[OPTION_COUNT-1];
         let mut line = String::new();
         io::stdin()
             .read_line(&mut line)
             .expect("Failed to read line");
 
-        for i in 0..OPTION_COUNT {
-            if line.trim() == INPUT_OPTIONS[i] {
-                status = i;
+        for item in INPUT_OPTIONS {
+            if line.trim() == item {
+                status = item;
             }
         }
         if status == exit!() {
             println!("{}{}", term_cursor::Up(1), Red.bold().paint("exit"));
             break;
-        } else if status > exit!() && status < printdata!() {
-            options::scen_new_array(status, &mut array);
         } else {
-            options::scen(status, &array);
+            options::scen(status, &mut array);
         }
 
         while array.is_empty() {

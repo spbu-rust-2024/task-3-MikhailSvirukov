@@ -4,131 +4,11 @@ use ansi_term::Color::{Green, Red};
 use ansi_term::Style;
 use std::io;
 
-macro_rules! arithmetic {
-    () => {
-        0
-    };
-}
-macro_rules! generalized {
-    () => {
-        1
-    };
-}
-macro_rules! geometric {
-    () => {
-        2
-    };
-}
-macro_rules! arithmeticgeometric {
-    () => {
-        3
-    };
-}
-macro_rules! arithmeticgeometricmodified {
-    () => {
-        4
-    };
-}
-macro_rules! trancated {
-    () => {
-        5
-    };
-}
-macro_rules! winsorized {
-    () => {
-        6
-    };
-}
-macro_rules! median {
-    () => {
-        7
-    };
-}
-macro_rules! mode {
-    () => {
-        8
-    };
-}
-macro_rules! absolutedeviation {
-    () => {
-        9
-    };
-}
-macro_rules! standarddeviation {
-    () => {
-        10
-    };
-}
-macro_rules! linearcoefficient {
-    () => {
-        11
-    };
-}
-macro_rules! standardcoefficient {
-    () => {
-        12
-    };
-}
-macro_rules! variance {
-    () => {
-        13
-    };
-}
-macro_rules! colmogorov {
-    () => {
-        14
-    };
-}
-macro_rules! help {
-    () => {
-        15
-    };
-}
-macro_rules! add {
-    () => {
-        17
-    };
-}
-macro_rules! addfile {
-    () => {
-        18
-    };
-}
-macro_rules! excludevalue {
-    () => {
-        19
-    };
-}
 
-macro_rules! excludeindex {
-    () => {
-        20
-    };
-}
-macro_rules! excludemax {
-    () => {
-        21
-    };
-}
-macro_rules! excludemin {
-    () => {
-        22
-    };
-}
-macro_rules! new {
-    () => {
-        23
-    };
-}
-macro_rules! printdata {
-    () => {
-        24
-    };
-}
 
-pub fn scen(status: usize, array: &Vec<f64>) {
+pub fn scen(status: &str, array: &mut Vec<f64>) {
     match status {
-        arithmetic!() => {
+        "mean_arithmetic" => {
             println!("{} {}", math::mean_arithmetic::mean_arithmetic(array), term_cursor::Up(2));
             println!(
                 "{} {}",
@@ -136,7 +16,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        generalized!() => {
+        "mean_generalized" => {
             println!("{}", Style::new().bold().paint("Input exponent:"));
             let mut line = String::new();
             io::stdin()
@@ -154,7 +34,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        geometric!() => {
+        "mean_geometric" => {
             println!("{} {}", math::mean_geometric::mean_geometric(array), term_cursor::Up(2));
             println!(
                 "{} {}",
@@ -162,7 +42,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        arithmeticgeometric!() => {
+        "mean_arithmetic_geometric" => {
             println!(
                 "{}{}",
                 term_cursor::Up(1),
@@ -183,7 +63,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 println!("{}", math::mean_arithmetic_geometric::mean_arithmetic_geometric(array, numb));
             }
         }
-        arithmeticgeometricmodified!() => {
+        "mean_arithmetic_geometric_modified" => {
             println!(
                 "{}{}",
                 term_cursor::Up(1),
@@ -196,7 +76,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             }
         }
 
-        trancated!() => {
+        "mean_truncated" => {
             println!(
                 "{} {}",
                 Style::new()
@@ -220,7 +100,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 println!("{}", math::mean_truncated::mean_truncated(array, numb),);
             }
         }
-        winsorized!() => {
+        "mean_winsorized" => {
             println!(
                 "{} {}",
                 Style::new()
@@ -245,15 +125,15 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             }
         }
 
-        median!() => {
+        "median" => {
             println!("{} {}", math::median::median(array), term_cursor::Up(2));
             println!("{} {}", Green.bold().paint("median"), term_cursor::Down(2));
         }
-        mode!() => {
+        "mode" => {
             println!("{} {}", math::mode::mode(array), term_cursor::Up(2));
             println!("{} {}", Green.bold().paint("mode"), term_cursor::Down(2));
         }
-        absolutedeviation!() => {
+        "average_absolute_deviation" => {
             println!(
                 "{} {}",
                 math::average_absolute_deviation::average_absolute_deviation(array),
@@ -265,7 +145,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        standarddeviation!() => {
+        "standard_deviation" => {
             println!(
                 "{} {}",
                 math::standard_deviation::standard_deviation(array),
@@ -277,7 +157,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        linearcoefficient!() => {
+        "linear_variation_coefficient" => {
             println!(
                 "{} {}",
                 math::linear_variation_coefficient::linear_variation_coefficient(array),
@@ -289,7 +169,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        standardcoefficient!() => {
+        "standard_variation_coefficient" => {
             println!(
                 "{} {}",
                 math::standard_variation_coefficient::standard_variation_coefficient(array),
@@ -301,7 +181,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        variance!() => {
+        "variance" => {
             println!("{} {}", math::variance::variance(array), term_cursor::Up(2));
             println!(
                 "{} {}",
@@ -309,7 +189,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        colmogorov!() => {
+        "mean_colmogorov" => {
             println!("{}{}", math::mean_colmogorov::mean_colmogorov(array), term_cursor::Up(2));
             println!(
                 "{} {}",
@@ -317,11 +197,11 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(2)
             );
         }
-        help!() => {
+        "help" => {
             println!("{}{}", term_cursor::Up(1), Green.bold().paint("help"));
             print_man();
         }
-        printdata!() => {
+        "print_data" => {
             for item in array {
                 print!("{} ", item)
             }
@@ -333,14 +213,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                 term_cursor::Down(1)
             );
         }
-
-        _ => println!("{}", Red.paint("No valid argument\nTry 'help'")),
-    }
-}
-
-pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
-    match status {
-        add!() => {
+        "add" => {
             println!("{}{}", term_cursor::Up(1), Green.bold().paint("add"));
             let new_array = input_array();
             for item in new_array {
@@ -349,7 +222,7 @@ pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
             sorting(array);
         }
 
-        addfile!() => {
+        "add_from_file" => {
             println!(
                 "{}{}",
                 term_cursor::Up(1),
@@ -362,7 +235,7 @@ pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
             sorting(array);
         }
 
-        excludevalue!() => {
+        "exclude_number_by_value" => {
             println!(
                 "{}{}",
                 term_cursor::Up(1),
@@ -384,7 +257,7 @@ pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
             }
         }
 
-        excludeindex!() => {
+        "exclude_number_by_index" => {
             println!(
                 "{}{}",
                 term_cursor::Up(1),
@@ -406,7 +279,7 @@ pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
             }
         }
 
-        excludemax!() => {
+        "exclude_maxes" => {
             println!(
                 "{}{}",
                 term_cursor::Up(1),
@@ -423,7 +296,7 @@ pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
             }
         }
 
-        excludemin!() => {
+        "exclude_mins" => {
             println!(
                 "{}{}",
                 term_cursor::Up(1),
@@ -440,7 +313,7 @@ pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
             }
         }
 
-        new!() => {
+        "new_data" => {
             println!("{}{}", term_cursor::Up(1), Green.bold().paint("new data"));
             for i in 0..array.len() {
                 array.pop();
