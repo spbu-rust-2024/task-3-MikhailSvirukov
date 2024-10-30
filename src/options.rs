@@ -84,11 +84,6 @@ macro_rules! help {
         15
     };
 }
-macro_rules! exit {
-    () => {
-        16
-    };
-}
 macro_rules! add {
     () => {
         17
@@ -169,7 +164,8 @@ pub fn scen(status: usize, array: &Vec<f64>) {
         }
         arithmeticgeometric!() => {
             println!(
-                "{}{}",term_cursor::Up(1),
+                "{}{}",
+                term_cursor::Up(1),
                 Green.bold().paint("mean arithmetic geometric"),
             );
             if array.len() != 2 {
@@ -184,26 +180,19 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                     .read_line(&mut line)
                     .expect("Failed to read line");
                 let numb = line.trim().parse::<usize>().expect("no digit");
-                println!(
-                    "{}",
-                    formuls::mean_arithmetic_geometric(array, numb)
-                );
-
+                println!("{}", formuls::mean_arithmetic_geometric(array, numb));
             }
         }
         arithmeticgeometricmodified!() => {
             println!(
-                "{}{}",term_cursor::Up(1),
+                "{}{}",
+                term_cursor::Up(1),
                 Green.bold().paint("mean arithmetic geometric modified"),
             );
             if array.len() != 2 {
                 println!("{}", Red.paint("Expect two values"))
             } else {
-                println!(
-                    "{}",
-                    formuls::mean_arithmetic_geometric_modified(array),
-                );
-
+                println!("{}", formuls::mean_arithmetic_geometric_modified(array),);
             }
         }
 
@@ -228,10 +217,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             if (numb * 2) > array.len() {
                 println!("{}", Red.paint("Can not extract so many numbers"));
             } else {
-                println!(
-                    "{}",
-                    formuls::mean_truncated(array, numb),
-                );
+                println!("{}", formuls::mean_truncated(array, numb),);
             }
         }
         winsorized!() => {
@@ -255,10 +241,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             if numb * 2 > array.len() {
                 println!("{}", Red.paint("Can not extract so many numbers"));
             } else {
-                println!(
-                    "{}",
-                    formuls::mean_winsorized(array, numb)
-                );
+                println!("{}", formuls::mean_winsorized(array, numb));
             }
         }
 
@@ -360,8 +343,8 @@ pub fn scen_new_array(status: usize, array: &mut Vec<f64>) {
         add!() => {
             println!("{}{}", term_cursor::Up(1), Green.bold().paint("add"));
             let new_array = input_array();
-            for i in 0..new_array.len() {
-                array.push(new_array[i]);
+            for item in new_array {
+                array.push(item);
             }
             sorting(array);
         }

@@ -1,4 +1,4 @@
-use crate::variants::var::{INPUT_OPTIONS, OPTION_COUNT};
+use crate::variants::var::{INPUT_OPTIONS};
 use ansi_term::Style;
 use std::{fs, io};
 pub fn input_array() -> Vec<f64> {

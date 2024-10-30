@@ -66,8 +66,8 @@ pub mod formuls {
     /*среднее усеченное*/
     pub fn mean_truncated(array: &[f64], k: usize) -> f64 {
         let mut res: Vec<f64> = Vec::new();
-        for i in k..array.len() - k {
-            res.push(array[i]);
+        for item in array.iter().take(array.len() - k).skip(k) {
+            res.push(*item);
         }
         mean_arithmetic(&res)
     }
@@ -98,13 +98,26 @@ pub mod formuls {
         let mut dev = 1.0;
         for i in 1..array.len() {
             if array[i] != array[i - 1] {
-                if max==count {numb+=array[i-1]; dev+=1.0; }
-                else if max<count {numb=array[i-1]; dev=1.0;max=count;}
-                count=1;
-            } else { count+=1;}
+                if max == count {
+                    numb += array[i - 1];
+                    dev += 1.0;
+                } else if max < count {
+                    numb = array[i - 1];
+                    dev = 1.0;
+                    max = count;
+                }
+                count = 1;
+            } else {
+                count += 1;
+            }
         }
-        if max==count {numb+=array[array.len()-1]; dev+=1.0; }
-        else if max<count {numb=array[array.len()-1]; dev=1.0;max=count;}
+        if max == count {
+            numb += array[array.len() - 1];
+            dev += 1.0;
+        } else if max < count {
+            numb = array[array.len() - 1];
+            dev = 1.0;
+        }
         numb / dev
     }
     /*среднее линейное отклонение*/
