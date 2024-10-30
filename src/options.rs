@@ -1,5 +1,5 @@
-use crate::lib::formuls;
 use crate::side_funcs::{input_array, input_array_file, input_array_usize, print_man, sorting};
+use crate::math;
 use ansi_term::Color::{Green, Red};
 use ansi_term::Style;
 use std::io;
@@ -129,7 +129,7 @@ macro_rules! printdata {
 pub fn scen(status: usize, array: &Vec<f64>) {
     match status {
         arithmetic!() => {
-            println!("{} {}", formuls::mean_arithmetic(array), term_cursor::Up(2));
+            println!("{} {}", math::mean_arithmetic::mean_arithmetic(array), term_cursor::Up(2));
             println!(
                 "{} {}",
                 Green.bold().paint("mean arithmetic"),
@@ -145,7 +145,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             let numb = line.trim().parse::<f64>().expect("no digit");
             println!(
                 "{} {}",
-                formuls::mean_generalized(array, numb),
+                math::mean_generalized::mean_generalized(array, numb),
                 term_cursor::Up(2)
             );
             println!(
@@ -155,7 +155,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             );
         }
         geometric!() => {
-            println!("{} {}", formuls::mean_geometric(array), term_cursor::Up(2));
+            println!("{} {}", math::mean_geometric::mean_geometric(array), term_cursor::Up(2));
             println!(
                 "{} {}",
                 Green.bold().paint("mean geometric"),
@@ -180,7 +180,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
                     .read_line(&mut line)
                     .expect("Failed to read line");
                 let numb = line.trim().parse::<usize>().expect("no digit");
-                println!("{}", formuls::mean_arithmetic_geometric(array, numb));
+                println!("{}", math::mean_arithmetic_geometric::mean_arithmetic_geometric(array, numb));
             }
         }
         arithmeticgeometricmodified!() => {
@@ -192,7 +192,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             if array.len() != 2 {
                 println!("{}", Red.paint("Expect two values"))
             } else {
-                println!("{}", formuls::mean_arithmetic_geometric_modified(array),);
+                println!("{}", math::mean_arithmetic_geometric_modified::mean_arithmetic_geometric_modified(array),);
             }
         }
 
@@ -217,7 +217,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             if (numb * 2) > array.len() {
                 println!("{}", Red.paint("Can not extract so many numbers"));
             } else {
-                println!("{}", formuls::mean_truncated(array, numb),);
+                println!("{}", math::mean_truncated::mean_truncated(array, numb),);
             }
         }
         winsorized!() => {
@@ -241,22 +241,22 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             if numb * 2 > array.len() {
                 println!("{}", Red.paint("Can not extract so many numbers"));
             } else {
-                println!("{}", formuls::mean_winsorized(array, numb));
+                println!("{}", math::mean_winsorized::mean_winsorized(array, numb));
             }
         }
 
         median!() => {
-            println!("{} {}", formuls::median(array), term_cursor::Up(2));
+            println!("{} {}", math::median::median(array), term_cursor::Up(2));
             println!("{} {}", Green.bold().paint("median"), term_cursor::Down(2));
         }
         mode!() => {
-            println!("{} {}", formuls::mode(array), term_cursor::Up(2));
+            println!("{} {}", math::mode::mode(array), term_cursor::Up(2));
             println!("{} {}", Green.bold().paint("mode"), term_cursor::Down(2));
         }
         absolutedeviation!() => {
             println!(
                 "{} {}",
-                formuls::average_absolute_deviation(array),
+                math::average_absolute_deviation::average_absolute_deviation(array),
                 term_cursor::Up(2)
             );
             println!(
@@ -268,7 +268,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
         standarddeviation!() => {
             println!(
                 "{} {}",
-                formuls::standard_deviation(array),
+                math::standard_deviation::standard_deviation(array),
                 term_cursor::Up(2)
             );
             println!(
@@ -280,7 +280,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
         linearcoefficient!() => {
             println!(
                 "{} {}",
-                formuls::linear_variation_coefficient(array),
+                math::linear_variation_coefficient::linear_variation_coefficient(array),
                 term_cursor::Up(2)
             );
             println!(
@@ -292,7 +292,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
         standardcoefficient!() => {
             println!(
                 "{} {}",
-                formuls::standard_variation_coefficient(array),
+                math::standard_variation_coefficient::standard_variation_coefficient(array),
                 term_cursor::Up(2)
             );
             println!(
@@ -302,7 +302,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             );
         }
         variance!() => {
-            println!("{} {}", formuls::variance(array), term_cursor::Up(2));
+            println!("{} {}", math::variance::variance(array), term_cursor::Up(2));
             println!(
                 "{} {}",
                 Green.bold().paint("variance"),
@@ -310,7 +310,7 @@ pub fn scen(status: usize, array: &Vec<f64>) {
             );
         }
         colmogorov!() => {
-            println!("{}{}", formuls::mean_colmogorov(array), term_cursor::Up(2));
+            println!("{}{}", math::mean_colmogorov::mean_colmogorov(array), term_cursor::Up(2));
             println!(
                 "{} {}",
                 Green.bold().paint("mean colmogorov"),

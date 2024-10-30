@@ -1,7 +1,8 @@
-mod lib;
 mod options;
 mod side_funcs;
+mod math;
 mod variants;
+
 use crate::variants::var::INPUT_OPTIONS;
 use crate::variants::var::OPTION_COUNT;
 use ansi_term::Color::{Green, Red};
