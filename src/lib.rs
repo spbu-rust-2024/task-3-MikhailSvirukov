@@ -1,7 +1,8 @@
-
 /*среднее арифметическое*/
+
 pub mod formuls {
-    pub fn mean_arithmetic(array: &Vec<f64>) -> f64 {
+
+    pub fn mean_arithmetic(array: &[f64]) -> f64 {
         let r: f64 = array.len() as f64;
         let sum: f64 = array.iter().sum::<f64>();
         sum / r
@@ -11,7 +12,7 @@ pub mod formuls {
         let r: f64 = array.len() as f64;
         let mut sum: f64 = 1.0;
         for elements in array {
-            sum = sum + (elements.powf(d));
+            sum += elements.powf(d);
         }
         (sum / r).powf(1.0 / d)
     }
@@ -22,10 +23,10 @@ pub mod formuls {
         for elements in array {
             sum *= elements;
         }
-        sum.powf(1.0/r)
+        sum.powf(1.0 / r)
     }
     /*среднее арифметико-геометрическое*/
-    pub fn mean_arithmetic_geometric(array: &Vec<f64>, e: usize) -> f64 {
+    pub fn mean_arithmetic_geometric(array: &[f64], e: usize) -> f64 {
         let mut a_array: Vec<f64> = Vec::new();
         let mut b_array: Vec<f64> = Vec::new();
         a_array.push(array[0]);
@@ -34,12 +35,12 @@ pub mod formuls {
         while i < e {
             a_array.push((a_array[i - 1] + b_array[i - 1]) / 2.0);
             b_array.push((a_array[i - 1] * b_array[i - 1]).sqrt());
-            i = i + 1;
+            i +=1;
         }
         a_array[e - 1]
     }
     /*модифицированное среднее арифметико-геометрическое*/
-    pub fn mean_arithmetic_geometric_modified(array: &Vec<f64>) -> f64 {
+    pub fn mean_arithmetic_geometric_modified(array: &[f64]) -> f64 {
         let mut a_array: Vec<f64> = Vec::new();
         let mut b_array: Vec<f64> = Vec::new();
         let mut c_array: Vec<f64> = Vec::new();
@@ -49,14 +50,22 @@ pub mod formuls {
         let mut i: usize = 1;
         while b_array[i - 1] > 0.0 {
             a_array.push((a_array[i - 1] + b_array[i - 1]) / 2.0);
-            b_array.push(c_array[i - 1] + ((a_array[i - 1] - c_array[i - 1]) * (b_array[i - 1] - c_array[i - 1])).sqrt());
-            c_array.push(c_array[i - 1] - ((a_array[i - 1] - c_array[i - 1]) * (b_array[i - 1] - c_array[i - 1])).sqrt());
-            i = i + 1;
+            b_array.push(
+                c_array[i - 1]
+                    + ((a_array[i - 1] - c_array[i - 1]) * (b_array[i - 1] - c_array[i - 1]))
+                        .sqrt(),
+            );
+            c_array.push(
+                c_array[i - 1]
+                    - ((a_array[i - 1] - c_array[i - 1]) * (b_array[i - 1] - c_array[i - 1]))
+                        .sqrt(),
+            );
+            i += 1;
         }
         a_array[i - 1]
     }
     /*среднее усеченное*/
-    pub fn mean_truncated(array: &Vec<f64>, k: usize) -> f64 {
+    pub fn mean_truncated(array: &[f64], k: usize) -> f64 {
         let mut res: Vec<f64> = Vec::new();
         for i in k..array.len() - k {
             res.push(array[i]);
@@ -64,8 +73,8 @@ pub mod formuls {
         mean_arithmetic(&res)
     }
     /*винзоризованное среднее*/
-    pub fn mean_winsorized(array: &Vec<f64>, k: usize) -> f64 {
-        let mut res = array.clone();
+    pub fn mean_winsorized(array: &[f64], k: usize) -> f64 {
+        let mut res = array.to_owned();
         for i in 0..k {
             res[i] = res[k];
         }
@@ -75,7 +84,7 @@ pub mod formuls {
         mean_arithmetic(&res)
     }
     /*медиана*/
-    pub fn median(array: &Vec<f64>) -> f64 {
+    pub fn median(array: &[f64]) -> f64 {
         if array.len() % 2 == 1 {
             array[array.len() / 2]
         } else {
@@ -83,7 +92,7 @@ pub mod formuls {
         }
     }
     /*мода*/
-    pub fn mode(array: &Vec<f64>) -> f64 {
+    pub fn mode(array: &[f64]) -> f64 {
         let mut max = 1;
         let mut count = 1;
         let mut numb = array[0];
@@ -91,8 +100,8 @@ pub mod formuls {
         for i in 1..array.len() {
             if array[i] != array[i - 1] {
                 if max == count {
-                    numb = numb + array[i];
-                    dev = dev + 1.0
+                    numb += array[i];
+                    dev += 1.0
                 } else if max < count {
                     numb = array[i - 1];
                     dev = 1.0;
@@ -100,7 +109,7 @@ pub mod formuls {
                 }
                 count = 1;
             } else {
-                count = count + 1;
+                count += 1;
             }
         }
         numb / dev
@@ -111,7 +120,7 @@ pub mod formuls {
         let mut sum = 0.0;
         let t = array.len() as f64;
         for elements in array {
-            sum = sum + (average - (elements)).abs();
+            sum += (average - (elements)).abs();
         }
         sum / t
     }
@@ -121,7 +130,7 @@ pub mod formuls {
         let mut sum = 0.0;
         let t = array.len() as f64;
         for elements in array {
-            sum = sum + (average - elements) * (average - elements);
+            sum += (average - elements) * (average - elements);
         }
         (sum / t).sqrt()
     }
@@ -139,8 +148,27 @@ pub mod formuls {
         let mut sum = 0.0;
         let t = array.len() as f64 - 1.0;
         for elements in array {
-            sum = sum + (average - elements) * (average - elements);
+            sum +=(average - elements) * (average - elements);
         }
         (sum / t).sqrt()
+    }
+
+    pub fn mean_colmogorov(array: &Vec<f64>) -> f64 {
+        let mut result = 0.0;
+        for item in array {
+            result += colmogorov(*item);
+        }
+        result /= array.len() as f64;
+        let mut start: f64 = 0.0;
+        let mut func_res = 0.0;
+        while func_res < result {
+            start += 0.125;
+            func_res = colmogorov(start);
+        }
+        start
+    }
+
+    fn colmogorov(number: f64) -> f64 {
+        number.powf(std::f64::consts::E) + number * number * 2.0 + number + 5.0
     }
 }
