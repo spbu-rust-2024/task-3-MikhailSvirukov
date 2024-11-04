@@ -1,71 +1,60 @@
-mod options;
-mod side_funcs;
+use ansi_term::Color::{Green, Red};
+use clap::Parser;
+use std::fs;
+use std::ops::Not;
+
 mod math;
+mod side_funcs;
 mod variants;
 
-use crate::variants::var::INPUT_OPTIONS;
-use crate::variants::var::OPTION_COUNT;
-use ansi_term::Color::{Green, Red};
-use ansi_term::Style;
-use std::io;
+#[derive(Parser, Debug)]
 
-macro_rules! exit {
-    () => {
-        INPUT_OPTIONS[16];
-    };
+struct Args {
+    #[arg(short = 'f', long = "file", required = true)]
+    file: String,
+    #[arg(long = "mean_arithmetic")]
+    mean_arithmetic: bool,
+
+    #[arg(long = "mean_geometric")]
+    mean_geometric: bool,
+
+    #[arg(long = "mean_arithmetic_geometric_modified")]
+    mean_arithmetic_geometric_modified: bool,
+
+    #[arg(long = "mean_truncated")]
+    mean_truncated: Option<usize>,
+
+    #[arg(long = "mean_winsorized")]
+    mean_winsorized: Option<usize>,
+
+    #[arg(long = "mean_generalized")]
+    mean_generalized: Option<usize>,
+
+    #[arg(long = "mean_arithmetic_geometric")]
+    mean_arithmetic_geometric: Option<usize>,
+
+    #[arg(long = "median")]
+    median: bool,
+    #[arg(long = "mode")]
+    mode: bool,
+    #[arg(long = "average_absolute_deviation")]
+    average_absolute_deviation: bool,
+    #[arg(long = "standard_deviation")]
+    standard_deviation: bool,
+    #[arg(long = "linear_variation_coefficient")]
+    linear_variation_coefficient: bool,
+    #[arg(long = "standard_variation_coefficient")]
+    standard_variation_coefficient: bool,
+    #[arg(long = "variance")]
+    variance: bool,
+    #[arg(long = "mean_colmogorov")]
+    mean_colmogorov: bool,
 }
+
 fn main() {
-    println!(
-        "{} {}",
-        Style::new().bold().paint("Choose input variant:"),
-        Style::new().italic().paint("\nfile\nprint")
-    );
-    let mut input_option: String = String::new();
-    let mut array: Vec<f64> = Vec::new();
-    io::stdin()
-        .read_line(&mut input_option)
-        .expect("Failed to read line");
-    match input_option.as_str() {
-        "print\n" => {
-            println!("{}{}", term_cursor::Up(1), Green.bold().paint("print"));
-            array = side_funcs::input_array()
-        }
-        "file\n" => {
-            array = {
-                println!("{}{}", term_cursor::Up(1), Green.bold().paint("file"));
-                side_funcs::input_array_file()
-            }
-        }
-        _ => {
-            println!("{}", Red.paint("No such option"));
-            return;
-        }
-    };
+    let res = Args::parse();
+    let line = res.file.as_str();
+    let mut array = side_funcs::input_array_file(line);
     side_funcs::sorting(&mut array);
-    let mut status = INPUT_OPTIONS[OPTION_COUNT-1];
-
-    loop {
-        status = INPUT_OPTIONS[OPTION_COUNT-1];
-        let mut line = String::new();
-        io::stdin()
-            .read_line(&mut line)
-            .expect("Failed to read line");
-
-        for item in INPUT_OPTIONS {
-            if line.trim() == item {
-                status = item;
-            }
-        }
-        if status == exit!() {
-            println!("{}{}", term_cursor::Up(1), Red.bold().paint("exit"));
-            break;
-        } else {
-            options::scen(status, &mut array);
-        }
-
-        while array.is_empty() {
-            println!("{}", Red.underline().paint("Empty array, input new one:"));
-            array = side_funcs::input_array();
-        }
-    }
+    variants::varint(res, array);
 }

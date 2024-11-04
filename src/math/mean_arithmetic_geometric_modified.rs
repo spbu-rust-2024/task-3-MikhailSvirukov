@@ -11,13 +11,11 @@ pub fn mean_arithmetic_geometric_modified(array: &[f64]) -> f64 {
         a_array.push((a_array[i - 1] + b_array[i - 1]) / 2.0);
         b_array.push(
             c_array[i - 1]
-                + ((a_array[i - 1] - c_array[i - 1]) * (b_array[i - 1] - c_array[i - 1]))
-                .sqrt(),
+                + ((a_array[i - 1] - c_array[i - 1]) * (b_array[i - 1] - c_array[i - 1])).sqrt(),
         );
         c_array.push(
             c_array[i - 1]
-                - ((a_array[i - 1] - c_array[i - 1]) * (b_array[i - 1] - c_array[i - 1]))
-                .sqrt(),
+                - ((a_array[i - 1] - c_array[i - 1]) * (b_array[i - 1] - c_array[i - 1])).sqrt(),
         );
         i += 1;
     }

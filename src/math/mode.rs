@@ -1,6 +1,3 @@
-
-
-
 /*мода*/
 pub fn mode(array: &[f64]) -> f64 {
     let mut max = 0;
